@@ -5,12 +5,42 @@ const budgetController = (() => {
 
 const uiController = (() => {
 
+    const HTML_ELEMENTS = {
+        INPUT_TYPE: {
+            className: '.add-type'
+        },
+        INPUT_DESCRIPTION: {
+            className: '.add-description'
+        },
+        INPUT_VALUE: {
+            className: '.add-value'
+        },
+        ADD_BUTTON: {
+            className: '.add-btn'
+        }
+    };
+
+    return {
+        getInput: () => {
+            return {
+                type: document.querySelector(HTML_ELEMENTS.INPUT_TYPE.className).value,
+                description: document.querySelector(HTML_ELEMENTS.INPUT_DESCRIPTION.className).value,
+                value: document.querySelector(HTML_ELEMENTS.INPUT_VALUE.className).value,
+            }
+        },
+        getHtmlElements: () => HTML_ELEMENTS
+    };
 })();
 
 const appController = ((budgetCtrl, uiCtrl) => {
 
+    const htmlELements = uiController.getHtmlElements();
+
     const addItem = () => {
         // 1. get field input data
+
+        const userInput = uiController.getInput();
+        console.log(userInput);
 
         // 2. add item to budget controller
 
@@ -18,12 +48,10 @@ const appController = ((budgetCtrl, uiCtrl) => {
 
         // 4. calculate budget
 
-        // display budget on ui
-
-        console.log('add an item')
+        // 5. display budget on ui
     }
 
-    document.querySelector('.add-btn ').addEventListener('click', addItem);
+    document.querySelector(htmlELements.ADD_BUTTON.className).addEventListener('click', addItem);
 
     document.addEventListener('keypress', (event) => {
         // event.which is needed for legacy browsers
