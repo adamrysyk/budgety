@@ -34,7 +34,18 @@ const uiController = (() => {
 
 const appController = ((budgetCtrl, uiCtrl) => {
 
-    const htmlELements = uiController.getHtmlElements();
+    const setupEventListeners = () => {
+        const htmlELements = uiController.getHtmlElements();
+
+        document.querySelector(htmlELements.ADD_BUTTON.className).addEventListener('click', addItem);
+
+        document.addEventListener('keypress', (event) => {
+            // event.which is needed for legacy browsers
+            if (event.keyCode === 13 || event.which === 13) {
+                addItem();
+            }
+        });
+    };
 
     const addItem = () => {
         // 1. get field input data
@@ -49,14 +60,13 @@ const appController = ((budgetCtrl, uiCtrl) => {
         // 4. calculate budget
 
         // 5. display budget on ui
+    };
+
+    return {
+        init: () => setupEventListeners()
     }
 
-    document.querySelector(htmlELements.ADD_BUTTON.className).addEventListener('click', addItem);
+})(budgetController, uiController);
 
-    document.addEventListener('keypress', (event) => {
-        // event.which is needed for legacy browsers
-        if (event.keyCode === 13 || event.which === 13) {
-            addItem();
-        }
-    });
-})(budgetController, uiController );
+appController.init();
+
